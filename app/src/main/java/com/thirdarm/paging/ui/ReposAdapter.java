@@ -1,5 +1,6 @@
 package com.thirdarm.paging.ui;
 
+import android.arch.paging.PagedListAdapter;
 import android.support.annotation.NonNull;
 import android.support.v7.recyclerview.extensions.ListAdapter;
 import android.support.v7.util.DiffUtil;
@@ -11,7 +12,7 @@ import com.thirdarm.paging.model.Repo;
 /**
  * Adapter for the list of repositories.
  */
-public class ReposAdapter extends ListAdapter<Repo, RecyclerView.ViewHolder> {
+public class ReposAdapter extends PagedListAdapter<Repo, RecyclerView.ViewHolder> { // previously just a ListAdapter
 
     ReposAdapter() {
         super(new DiffUtil.ItemCallback<Repo>() {

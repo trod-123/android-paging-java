@@ -1,6 +1,8 @@
 package com.thirdarm.paging.db;
 
 import android.arch.lifecycle.LiveData;
+import android.arch.paging.DataSource;
+import android.arch.persistence.room.Dao;
 import android.util.Log;
 
 import com.thirdarm.paging.model.Repo;
@@ -42,7 +44,7 @@ public class GithubLocalCache {
      * any characters between the words.
      * @param name repository name
      */
-    public LiveData<List<Repo>> reposByName(String name) {
+    public DataSource.Factory<Integer, Repo> reposByName(String name) { // previously returned LiveData<List<Repo>>
         // appending '%' so we can allow other characters to be before and after the query string
         String query = String.format("%%%s%%", name.replace(' ', '%'));
         return repoDao.reposByName(query);

@@ -5,6 +5,7 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Transformations;
 import android.arch.lifecycle.ViewModel;
+import android.arch.paging.PagedList;
 import android.support.annotation.Nullable;
 
 import com.thirdarm.paging.data.GithubRepository;
@@ -34,9 +35,9 @@ public class SearchRepositoriesViewModel extends ViewModel {
         }
     });
 
-    public LiveData<List<Repo>> repos = Transformations.switchMap(repoResult, new Function<RepoSearchResult, LiveData<List<Repo>>>() {
+    public LiveData<PagedList<Repo>> repos = Transformations.switchMap(repoResult, new Function<RepoSearchResult, LiveData<PagedList<Repo>>>() {
         @Override
-        public LiveData<List<Repo>> apply(RepoSearchResult input) {
+        public LiveData<PagedList<Repo>> apply(RepoSearchResult input) {
             return input.getData();
         }
     });
@@ -56,14 +57,15 @@ public class SearchRepositoriesViewModel extends ViewModel {
     }
 
     // For detecting when user reaches the end of the list, load more data
-    public void listScrolled(int visibleItemCount, int lastVisibleItemPosition, int totalItemCount) {
-        if (visibleItemCount + lastVisibleItemPosition + VISIBLE_THRESHOLD >= totalItemCount) {
-            String immutableQuery = lastQueryValue();
-            if (immutableQuery != null) {
-                repository.requestMore(immutableQuery);
-            }
-        }
-    }
+    // Not needed when using PagedLists as PagedLists does it itself
+//    public void listScrolled(int visibleItemCount, int lastVisibleItemPosition, int totalItemCount) {
+//        if (visibleItemCount + lastVisibleItemPosition + VISIBLE_THRESHOLD >= totalItemCount) {
+//            String immutableQuery = lastQueryValue();
+//            if (immutableQuery != null) {
+//                repository.requestMore(immutableQuery);
+//            }
+//        }
+//    }
 
     /**
      * Get the last query value

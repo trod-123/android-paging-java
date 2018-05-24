@@ -1,6 +1,7 @@
 package com.thirdarm.paging.db;
 
 import android.arch.lifecycle.LiveData;
+import android.arch.paging.DataSource;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.OnConflictStrategy;
@@ -23,5 +24,9 @@ interface RepoDao {
     // and order those results descending, by the number of stars and then by name
     @Query("SELECT * FROM repos WHERE (name LIKE :queryString) OR (description LIKE " +
             ":queryString) ORDER BY stars DESC, name ASC")
-    LiveData<List<Repo>> reposByName(String queryString);
+    // Previously returned LiveData<List<Repo>>. For paging, the query method needs to be loaded onto
+    // a DataSource is the source of data read by the PagedList. PagedList dynamically loads data from
+    // this DataSource. The DataSource is automatically invalided and recreated when the data set
+    // is updated. Here, return a DataSource.Factory from query method to handle DataSource implementation
+    DataSource.Factory<Integer, Repo> reposByName(String queryString);
 }

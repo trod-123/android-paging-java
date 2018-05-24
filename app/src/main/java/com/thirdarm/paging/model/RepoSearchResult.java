@@ -1,6 +1,7 @@
 package com.thirdarm.paging.model;
 
 import android.arch.lifecycle.LiveData;
+import android.arch.paging.PagedList;
 
 import java.util.List;
 
@@ -9,19 +10,19 @@ import java.util.List;
  * and a LiveData<String> of network error state.
  */
 public class RepoSearchResult {
-    private LiveData<List<Repo>> data;
+    private LiveData<PagedList<Repo>> data;
     private LiveData<String> networkErrors;
 
-    public RepoSearchResult(LiveData<List<Repo>> data, LiveData<String> networkErrors) {
+    public RepoSearchResult(LiveData<PagedList<Repo>> data, LiveData<String> networkErrors) {
         this.data = data;
         this.networkErrors = networkErrors;
     }
 
-    public LiveData<List<Repo>> getData() {
+    public LiveData<PagedList<Repo>> getData() {
         return data;
     }
 
-    public void setData(LiveData<List<Repo>> data) {
+    public void setData(LiveData<PagedList<Repo>> data) {
         this.data = data;
     }
 

@@ -2,6 +2,7 @@ package com.thirdarm.paging.ui;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.arch.paging.PagedList;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -53,7 +54,7 @@ public class SearchRepositoriesActivity extends AppCompatActivity {
         // add dividers between RecyclerView's row items
         list.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         list.setLayoutManager(new LinearLayoutManager(this));
-        setupScrollListener();
+//        setupScrollListener(); // Not needed for updating PagedList data
 
         initAdapter();
         String query = DEFAULT_QUERY;
@@ -76,9 +77,9 @@ public class SearchRepositoriesActivity extends AppCompatActivity {
         list.setAdapter(adapter);
 
         // !!! Setup the viewmodel observer
-        viewModel.repos.observe(this, new Observer<List<Repo>>() {
+        viewModel.repos.observe(this, new Observer<PagedList<Repo>>() {
             @Override
-            public void onChanged(@Nullable List<Repo> repos) {
+            public void onChanged(@Nullable PagedList<Repo> repos) {
                 Log.d("Activity", String.format("List size: %s", repos != null ? repos.size() : "empty"));
                 showEmptyList(repos == null || repos.size() == 0);
                 adapter.submitList(repos);
@@ -137,18 +138,18 @@ public class SearchRepositoriesActivity extends AppCompatActivity {
         }
     }
 
-    private void setupScrollListener() {
-        final LinearLayoutManager layoutManager = (LinearLayoutManager) list.getLayoutManager();
-        list.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                int totalItemCount = layoutManager.getItemCount();
-                int visibleItemCount = layoutManager.getChildCount();
-                int lastVisibleItem = layoutManager.findLastVisibleItemPosition();
-
-                viewModel.listScrolled(visibleItemCount, lastVisibleItem, totalItemCount);
-            }
-        });
-    }
+//    private void setupScrollListener() {
+//        final LinearLayoutManager layoutManager = (LinearLayoutManager) list.getLayoutManager();
+//        list.addOnScrollListener(new RecyclerView.OnScrollListener() {
+//            @Override
+//            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+//                super.onScrolled(recyclerView, dx, dy);
+//                int totalItemCount = layoutManager.getItemCount();
+//                int visibleItemCount = layoutManager.getChildCount();
+//                int lastVisibleItem = layoutManager.findLastVisibleItemPosition();
+//
+//                viewModel.listScrolled(visibleItemCount, lastVisibleItem, totalItemCount);
+//            }
+//        });
+//    }
 }
